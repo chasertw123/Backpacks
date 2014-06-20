@@ -1,0 +1,10 @@
+name: CrownBackpacks
+version: 1.0
+main: us.crownnetwork.Main
+author: chasertw123
+          
+commands:
+    backpack:
+        description: Open your backpack!
+    bp:
+        description: Open your backpack!
