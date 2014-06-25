@@ -181,8 +181,8 @@ public class Yaml {
 	}
 	
 	// Create a section
-	public void createSection(String s) {
-		this.yaml.createSection(s);
+	public ConfigurationSection createSection(String s) {
+		return this.yaml.createSection(s);
 	}
 	
 	// Return Configuration Section

@@ -2,12 +2,16 @@ package us.crownnetwork.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import us.crownnetwork.Main;
@@ -66,7 +70,6 @@ public class PlayerInteract implements Listener {
 				p.updateInventory();
 
 				yaml.set("backpack.size", 9);
-				yaml.createSection("backpack.contents");
 				yaml.save();
 
 				plugin.sendMessage(p, ChatColor.GREEN + "You just activated a leather backpack!");
@@ -75,14 +78,22 @@ public class PlayerInteract implements Listener {
 			if (i.getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Leather Backpack" + ChatColor.GRAY + " (Tier 1)")
 					|| i.getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Stone Backpack" + ChatColor.GRAY + " (Tier 2)")) {
 				
-				//Yaml yaml = plugin.getFh().getBackpack(UUID.fromString(i.getItemMeta().getLore().get(6).substring(6)));
+				Yaml yaml = plugin.getFh().getBackpack(UUID.fromString(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(5)).substring(6)));
+				Inventory inv = Bukkit.createInventory(null, yaml.getInteger("backpack.size"), ChatColor.GRAY + "" + ChatColor.UNDERLINE + "Backpack");
 				
-				//Inventory inv = Bukkit.createInventory(null, yaml.getInteger("backpack.size"), ChatColor.UNDERLINE + "Backpack");
-				
-				//for (String item : yaml.getConfigurationSection("").getKeys(false))
+				if (yaml.contains("backpack.contents"))
+					for (String item : yaml.getConfigurationSection("backpack.contents").getKeys(false))
+						inv.addItem(loadItem(yaml.getConfigurationSection("backpack.contents" + item)));
+                     
+                p.openInventory(inv);
 			}
 
-
 		}
+	}
+	
+
+	private ItemStack loadItem(ConfigurationSection section) {
+        return new ItemStack(Material.valueOf(section.getString("type")), section.getInt("amount"), (short) section.getDouble("data"));
+        // Load more information.
 	}
 }

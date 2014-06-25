@@ -5,6 +5,7 @@ import org.bukkit.plugin.PluginManager;
 import us.crownnetwork.Main;
 import us.crownnetwork.listeners.BlockPlace;
 import us.crownnetwork.listeners.InventoryClick;
+import us.crownnetwork.listeners.InventoryClose;
 import us.crownnetwork.listeners.PlayerInteract;
 import us.crownnetwork.listeners.PlayerPickupItem;
 import us.crownnetwork.listeners.PrepareItemCraft;
@@ -24,5 +25,6 @@ public class ListenerHandler {
 		pm.registerEvents(new InventoryClick(plugin), plugin);
 		pm.registerEvents(new PlayerPickupItem(), plugin);
 		pm.registerEvents(new PlayerInteract(plugin), plugin);
+		pm.registerEvents(new InventoryClose(plugin), plugin);
 	}
 }
